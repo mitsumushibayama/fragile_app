@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<header>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>参照フォーム</title>
+</header>
+<body>
+    <h1>参照フォーム</h1>
+    <label for="reference_id">参照ID: </label>
+    <input type="text" value="" id="reference_id">
+    <input type="button" value="参照" id="reference_button">
+    <script>
+        const reference_button = document.getElementById("reference_button");
+        const message = document.getElementById("msg");
+
+        reference_button.addEventListener('click', () => {
+
+            const textbox = document.getElementById("reference_id");
+            const idvalue = textbox.value;
+
+            if(idvalue == "") {
+                const request = new XMLHttpRequest();
+
+                request.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        console.log('DONE:リクエスト完了');
+
+                        const responses = this.response;
+                        for(let i = 0; i < responses.all_user.length; i++) {
+                            let div = document.createElement('div');
+                            div.innerText = 'userID: ' + responses.all_user[i].id + '  name: ' + responses.all_user[i].name;
+                            document.body.appendChild(div)
+                        }
+                    }    
+                }
+                const URL = '/get/users'
+                request.open('GET', URL, true);
+                request.responseType = 'json';
+                request.send();
+            }
+            else {
+                const request = new XMLHttpRequest();
+                request.onreadystatechange = function() {
+                    if(this.readyState == 4 && this.status == 200) {
+                        console.log('DONE:リクエスト完了');
+                        const responses = this.response
+                        
+                        console.log(responses)
+                        console.log(responses.id_user[0].name)
+                        let div = document.createElement('div');
+                        div.innerText = 'userID: ' + responses.id_user[0].id + '  name: ' + responses.id_user[0].name;
+                        document.body.appendChild(div)
+                    }
+                }
+                const URL = '/get/users/' + idvalue
+                request.open('GET', URL, true);
+                request.responseType = 'json';
+                request.send();
+            }
+        });
+    </script>
+</body>
+</html>
