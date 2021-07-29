@@ -12,13 +12,19 @@ app = FastAPI()
 def read_root():
     return FileResponse(file_path, media_type='text/html')
 
-@app.get("/get/users")
+@app.get("/get/user")
 async def get_all():
     json_data = jsonable_encoder(db.get_all())
     return JSONResponse(content = json_data)
 
-@app.get("/get/users/{id}")
+@app.get("/get/user/n={id}")
 async def get_user(id: int):
     json_data = jsonable_encoder(db.get_id_user(id))
     return JSONResponse(content = json_data)
+
+@app.get("/get/user/pass/n={id}")
+async def get_user(id: int):
+    json_data = jsonable_encoder(db.get_id_user_pass(id))
+    return JSONResponse(content = json_data)
+
 
