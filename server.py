@@ -1,28 +1,31 @@
 from fastapi import FastAPI
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
-from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 import db
 
-file_path = 'reference.html'
 app = FastAPI()
 
-@app.get("/", response_class = HTMLResponse)
+@app.get("/")
 def read_root():
-    return FileResponse(file_path, media_type='text/html')
+    return FileResponse('reference.html')
+
+@app.get("/scripts")
+def read_js():
+    return FileResponse('reference.js')
 
 @app.get("/get/user")
 async def get_all():
     json_data = jsonable_encoder(db.get_all())
     return JSONResponse(content = json_data)
 
-@app.get("/get/user/n={id}")
+@app.get("/get/user/{id}")
 async def get_user(id: int):
     json_data = jsonable_encoder(db.get_id_user(id))
     return JSONResponse(content = json_data)
 
-@app.get("/get/user/pass/n={id}")
+@app.get("/get/user/{id}/pass")
 async def get_user(id: int):
     json_data = jsonable_encoder(db.get_id_user_pass(id))
     return JSONResponse(content = json_data)
