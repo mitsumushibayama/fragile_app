@@ -6,6 +6,7 @@ from fastapi.responses import FileResponse
 import db
 
 app = FastAPI()
+app.mount("/scripts", StaticFiles(directory="scripts"), name="scripts")
 
 @app.get("/")
 def read_root():
@@ -13,7 +14,7 @@ def read_root():
 
 @app.get("/scripts")
 def read_js():
-    return FileResponse('reference.js')
+    return FileResponse('scripts/reference.js')
 
 @app.get("/get/user")
 async def get_all():
