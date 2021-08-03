@@ -11,13 +11,13 @@ reference_button.addEventListener('click', () => {
     if(idvalue != "" && passvalue != "") {
 
         const PassCheckrequest = new XMLHttpRequest;
+        
         PassCheckrequest.onreadystatechange = function () {
             if(this.readyState == 4 && this.status == 200) {
                 const response = this.response;
                 ans = response.user_pass[0].pass;
                 if(passvalue == ans) {
 
-                    console.log('Yes!');
                     const request = new XMLHttpRequest();
                     request.onreadystatechange = function() {
                         if(this.readyState == 4 && this.status == 200) {
